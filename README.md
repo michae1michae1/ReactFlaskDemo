@@ -72,8 +72,3 @@ energy-resiliency-demo/
 │   └── ...
 └── README.md
 ```
-
----
-
-## 📝 License
-MIT
