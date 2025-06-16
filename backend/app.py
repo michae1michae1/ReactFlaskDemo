@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, send_from_directory
-import sqlite3, os
+import sqlite3, os, random
 from flask_cors import CORS
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "sample.db")
@@ -55,6 +55,26 @@ def delete_project(pid):
     conn.commit()
     conn.close()
     return "", 204
+
+@server.route("/api/generate_project", methods=["GET"])
+def generate_project():
+    conn = get_db()
+    cur = conn.cursor()
+    # Get random location
+    cur.execute("SELECT city FROM locations ORDER BY RANDOM() LIMIT 1;")
+    location = cur.fetchone()[0]
+    # Get random project template
+    cur.execute("SELECT title, description FROM project_templates ORDER BY RANDOM() LIMIT 1;")
+    title, description = cur.fetchone()
+    # Generate random impact score
+    impact_score = round(random.uniform(0, 10), 1)
+    conn.close()
+    return jsonify({
+        "name": title,
+        "location": location,
+        "impact_score": impact_score,
+        "description": description
+    })
 
 # Serve React build (optional, for production)
 @server.route("/")
