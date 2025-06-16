@@ -76,4 +76,4 @@ energy-resiliency-demo/
 ---
 
 ## 📝 License
-MIT 
+MIT
